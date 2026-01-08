@@ -1,8 +1,15 @@
-FROM python:3.10-slim-buster
+FROM python:3.11-slim
+
 WORKDIR /app
-COPY . /app
 
-RUN apt-get update && pip install -r requirements.txt
+# Install Python dependencies first (better layer caching)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Cloud Run expects the app to listen on PORT environment variable
-CMD ["python3", "app.py"]
+# Copy rest of the application
+COPY . .
+
+ENV PORT=8000
+EXPOSE 8000
+
+CMD ["python", "app.py"]
