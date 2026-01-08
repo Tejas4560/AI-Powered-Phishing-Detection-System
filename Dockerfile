@@ -2,11 +2,21 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install Python dependencies first (better layer caching)
+# Install system dependencies required for ML packages
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    gcc \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Upgrade pip (VERY IMPORTANT)
+RUN pip install --upgrade pip setuptools wheel
+
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy rest of the application
+# Copy application code
 COPY . .
 
 ENV PORT=8000
