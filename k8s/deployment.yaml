@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: networksecurity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: networksecurity
+  template:
+    metadata:
+      labels:
+        app: networksecurity
+    spec:
+      containers:
+      - name: networksecurity
+        image: us-central1-docker.pkg.dev/${GCP_PROJECT_ID}/networksecurity/networksecurity:latest
+        ports:
+        - containerPort: 8000
+        env:
+        - name: GCS_BUCKET_NAME
+          valueFrom:
+            secretKeyRef:
+              name: networksecurity-secrets
+              key: GCS_BUCKET_NAME
+        - name: GCS_DATA_FILE
+          valueFrom:
+            secretKeyRef:
+              name: networksecurity-secrets
+              key: GCS_DATA_FILE
+        # Add other environment variables as needed (e.g., GOOGLE_APPLICATION_CREDENTIALS if not using Workload Identity)

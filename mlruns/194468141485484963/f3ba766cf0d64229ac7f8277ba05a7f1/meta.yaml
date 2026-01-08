@@ -1,0 +1,14 @@
+artifact_uri: file:///home/lenovo/networksecurity/mlruns/194468141485484963/f3ba766cf0d64229ac7f8277ba05a7f1/artifacts
+end_time: 1767796933060
+entry_point_name: ''
+experiment_id: '194468141485484963'
+lifecycle_stage: active
+run_id: f3ba766cf0d64229ac7f8277ba05a7f1
+run_name: dapper-koi-870
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1767796928040
+status: 3
+tags: []
+user_id: lenovo

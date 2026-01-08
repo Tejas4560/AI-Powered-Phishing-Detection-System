@@ -1,0 +1,92 @@
+name: GCP Cloud Run Deployment
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  integration:
+    name: Continuous Integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint code
+        run: echo "Linting repository"
+
+      - name: Run unit tests
+        run: echo "Running unit tests"
+
+  build-and-push-gcr-image:
+    name: Continuous Delivery
+    needs: integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
+
+      - name: Build and Push Docker Image
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+          GCP_REGION: ${{ secrets.GCP_REGION }}
+          IMAGE_NAME: networksecurity
+          IMAGE_TAG: latest
+        run: |
+          # Build the Docker image
+          docker build -t $GCP_REGION-docker.pkg.dev/$GCP_PROJECT_ID/networksecurity/$IMAGE_NAME:$IMAGE_TAG .
+          
+          # Push to Artifact Registry
+          docker push $GCP_REGION-docker.pkg.dev/$GCP_PROJECT_ID/networksecurity/$IMAGE_NAME:$IMAGE_TAG
+
+  deploy-to-gke:
+    name: Continuous Deployment
+    needs: build-and-push-gcr-image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Get GKE Credentials
+        uses: google-github-actions/get-gke-credentials@v1
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
+          location: ${{ secrets.GKE_ZONE }}
+
+      - name: Deploy to GKE
+        env:
+          GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+        run: |
+           # Replace placeholders in deployment.yaml
+           envsubst < k8s/deployment.yaml > k8s/deployment_final.yaml
+           
+           # Apply Kubernetes manifests
+           kubectl apply -f k8s/deployment_final.yaml
+           kubectl apply -f k8s/service.yaml
+           
+           # Force restart to pull latest image
+           kubectl rollout restart deployment/networksecurity

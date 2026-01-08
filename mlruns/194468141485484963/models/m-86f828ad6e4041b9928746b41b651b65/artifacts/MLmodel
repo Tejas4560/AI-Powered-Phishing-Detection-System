@@ -1,0 +1,22 @@
+artifact_path: file:///home/lenovo/networksecurity/mlruns/194468141485484963/models/m-86f828ad6e4041b9928746b41b651b65/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.13.9
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.8.0
+mlflow_version: 3.8.1
+model_id: m-86f828ad6e4041b9928746b41b651b65
+model_size_bytes: 13568513
+model_uuid: m-86f828ad6e4041b9928746b41b651b65
+prompts: null
+run_id: f3ba766cf0d64229ac7f8277ba05a7f1
+utc_time_created: '2026-01-07 14:42:08.089068'

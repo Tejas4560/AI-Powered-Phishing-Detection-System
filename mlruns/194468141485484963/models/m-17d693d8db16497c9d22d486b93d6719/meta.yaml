@@ -1,0 +1,10 @@
+artifact_location: file:///home/lenovo/networksecurity/mlruns/194468141485484963/models/m-17d693d8db16497c9d22d486b93d6719/artifacts
+creation_timestamp: 1767796933220
+experiment_id: '194468141485484963'
+last_updated_timestamp: 1767796938376
+model_id: m-17d693d8db16497c9d22d486b93d6719
+model_type: null
+name: model
+source_run_id: 13a7e445506742b78809cf114392bea9
+status: 2
+status_message: null

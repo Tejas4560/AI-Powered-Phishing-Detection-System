@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Security - Phishing Detection</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <path d="M20 5L5 12.5V20C5 28.75 11.25 36.75 20 38.75C28.75 36.75 35 28.75 35 20V12.5L20 5Z"
+                        stroke="url(#gradient)" stroke-width="2" fill="none" />
+                    <path d="M20 15V25M15 20H25" stroke="url(#gradient)" stroke-width="2" stroke-linecap="round" />
+                    <defs>
+                        <linearGradient id="gradient" x1="5" y1="5" x2="35" y2="38.75">
+                            <stop offset="0%" stop-color="#667eea" />
+                            <stop offset="100%" stop-color="#764ba2" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <h1>Network Security</h1>
+            </div>
+            <p class="subtitle">AI-Powered Phishing Detection System</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-card">
+                    <div class="upload-icon">
+                        <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+                            <circle cx="32" cy="32" r="30" stroke="url(#uploadGradient)" stroke-width="2" fill="none" />
+                            <path d="M32 20V44M20 32H44" stroke="url(#uploadGradient)" stroke-width="3"
+                                stroke-linecap="round" />
+                            <defs>
+                                <linearGradient id="uploadGradient" x1="2" y1="2" x2="62" y2="62">
+                                    <stop offset="0%" stop-color="#667eea" />
+                                    <stop offset="100%" stop-color="#764ba2" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h2>Upload CSV File for Analysis</h2>
+                    <p class="upload-description">Upload a CSV file containing network security features to detect
+                        phishing websites</p>
+
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <div class="file-input-wrapper">
+                            <input type="file" id="fileInput" name="file" accept=".csv" required>
+                            <label for="fileInput" class="file-label">
+                                <span class="file-label-text">Choose CSV File</span>
+                                <span class="file-name" id="fileName">No file chosen</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-primary" id="analyzeBtn">
+                            <span class="btn-text">Analyze File</span>
+                            <span class="btn-loader" style="display: none;">
+                                <span class="spinner"></span>
+                                Analyzing...
+                            </span>
+                        </button>
+                    </form>
+
+                    <div class="info-box">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="9" stroke="#667eea" stroke-width="1.5" />
+                            <path d="M10 6V10M10 14H10.01" stroke="#667eea" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        <span>CSV file must contain 30 network security features</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2>Analysis Results</h2>
+                    <button class="btn-secondary" id="newAnalysisBtn">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M14 8H2M8 2V14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        New Analysis
+                    </button>
+                </div>
+
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Stats will be inserted here -->
+                </div>
+
+                <div class="results-table-container">
+                    <div id="resultsTable">
+                        <!-- Table will be inserted here -->
+                    </div>
+                </div>
+
+                <div class="download-section">
+                    <button class="btn-download" id="downloadBtn">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M10 2V14M10 14L6 10M10 14L14 10" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" />
+                            <path d="M2 18H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                        Download Results (CSV)
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Powered by Machine Learning | Built with FastAPI & Python</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+
+</html>
