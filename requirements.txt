@@ -1,15 +1,17 @@
 python-dotenv
 pandas
 numpy
+pandas
 google-cloud-storage
-certifi
+python-dotenv==0.21.0
+PyYAML
 scikit-learn
 mlflow
-pyaml
-dagshub
 fastapi
 uvicorn
 python-multipart
-
-
+dill
+beautifulsoup4
+requests
+python-whois
 -e .

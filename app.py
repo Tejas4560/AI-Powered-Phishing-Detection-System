@@ -76,6 +76,44 @@ async def predict_route(request: Request,file: UploadFile = File(...)):
     except Exception as e:
             raise NetworkSecurityException(e,sys)
 
+@app.post("/predict-url")
+async def predict_url_route(url: str):
+    """
+    Predict phishing for a given URL
+    Automatically extracts all 30 features from the URL
+    """
+    try:
+        from networksecurity.utils.url_feature_extractor import URLFeatureExtractor
+        
+        # Extract features from URL
+        extractor = URLFeatureExtractor(url)
+        features = extractor.extract_all_features()
+        
+        # Convert to DataFrame
+        df = pd.DataFrame([features])
+        
+        # Load model and make prediction
+        preprocessor = load_object("final_model/preprocessor.pkl")
+        final_model = load_object("final_model/model.pkl")
+        network_model = NetworkModel(preprocessor=preprocessor, model=final_model)
+        
+        y_pred = network_model.predict(df)
+        prediction = int(y_pred[0])
+        
+        # Prepare response
+        result = {
+            "url": url,
+            "prediction": "Legitimate" if prediction == 1 else "Phishing",
+            "prediction_value": prediction,
+            "confidence": "High" if abs(prediction) == 1 else "Medium",
+            "features": features
+        }
+        
+        return result
+        
+    except Exception as e:
+        raise NetworkSecurityException(e, sys)
+
     
 if __name__=="__main__":
     # Cloud Run provides PORT environment variable

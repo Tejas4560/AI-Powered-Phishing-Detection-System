@@ -47,34 +47,67 @@
                             </defs>
                         </svg>
                     </div>
-                    <h2>Upload CSV File for Analysis</h2>
-                    <p class="upload-description">Upload a CSV file containing network security features to detect
-                        phishing websites</p>
+                    <h2>Analyze Website for Phishing</h2>
+                    <p class="upload-description">Enter a URL or upload a CSV file to detect phishing websites</p>
 
-                    <form id="uploadForm" enctype="multipart/form-data">
-                        <div class="file-input-wrapper">
-                            <input type="file" id="fileInput" name="file" accept=".csv" required>
-                            <label for="fileInput" class="file-label">
-                                <span class="file-label-text">Choose CSV File</span>
-                                <span class="file-name" id="fileName">No file chosen</span>
-                            </label>
+                    <!-- Tab Switcher -->
+                    <div class="tab-switcher">
+                        <button class="tab-btn active" data-tab="url">🔗 URL Input</button>
+                        <button class="tab-btn" data-tab="csv">📄 CSV Upload</button>
+                    </div>
+
+                    <!-- URL Input Tab -->
+                    <div class="tab-content active" id="urlTab">
+                        <form id="urlForm">
+                            <div class="url-input-wrapper">
+                                <input type="url" id="urlInput" name="url" placeholder="https://example.com" required>
+                                <button type="submit" class="btn-primary" id="analyzeUrlBtn">
+                                    <span class="btn-text">Analyze URL</span>
+                                    <span class="btn-loader" style="display: none;">
+                                        <span class="spinner"></span>
+                                        Analyzing...
+                                    </span>
+                                </button>
+                            </div>
+                        </form>
+                        <div class="info-box">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="9" stroke="#667eea" stroke-width="1.5" />
+                                <path d="M10 6V10M10 14H10.01" stroke="#667eea" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <span>Enter any website URL to check if it's safe or phishing</span>
                         </div>
+                    </div>
 
-                        <button type="submit" class="btn-primary" id="analyzeBtn">
-                            <span class="btn-text">Analyze File</span>
-                            <span class="btn-loader" style="display: none;">
-                                <span class="spinner"></span>
-                                Analyzing...
-                            </span>
-                        </button>
-                    </form>
+                    <!-- CSV Upload Tab -->
+                    <div class="tab-content" id="csvTab">
+                        <form id="uploadForm" enctype="multipart/form-data">
+                            <div class="file-input-wrapper">
+                                <input type="file" id="fileInput" name="file" accept=".csv" required>
+                                <label for="fileInput" class="file-label">
+                                    <span class="file-label-text">Choose CSV File</span>
+                                    <span class="file-name" id="fileName">No file chosen</span>
+                                </label>
+                            </div>
 
-                    <div class="info-box">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                            <circle cx="10" cy="10" r="9" stroke="#667eea" stroke-width="1.5" />
-                            <path d="M10 6V10M10 14H10.01" stroke="#667eea" stroke-width="2" stroke-linecap="round" />
-                        </svg>
-                        <span>CSV file must contain 30 network security features</span>
+                            <button type="submit" class="btn-primary" id="analyzeBtn">
+                                <span class="btn-text">Analyze File</span>
+                                <span class="btn-loader" style="display: none;">
+                                    <span class="spinner"></span>
+                                    Analyzing...
+                                </span>
+                            </button>
+                        </form>
+
+                        <div class="info-box">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="9" stroke="#667eea" stroke-width="1.5" />
+                                <path d="M10 6V10M10 14H10.01" stroke="#667eea" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <span>CSV file must contain 30 network security features</span>
+                        </div>
                     </div>
                 </div>
             </section>
