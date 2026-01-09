@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: networksecurity
-        image: us-central1-docker.pkg.dev/${GCP_PROJECT_ID}/networksecurity/networksecurity:latest
+        image: us-central1-docker.pkg.dev/network-security-483613/networksecurity/networksecurity:latest
         ports:
         - containerPort: 8000
         env:
@@ -28,4 +28,18 @@ spec:
             secretKeyRef:
               name: networksecurity-secrets
               key: GCS_DATA_FILE
-        # Add other environment variables as needed (e.g., GOOGLE_APPLICATION_CREDENTIALS if not using Workload Identity)
+        - name: GOOGLE_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: oauth-secrets
+              key: GOOGLE_CLIENT_ID
+        - name: GOOGLE_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: oauth-secrets
+              key: GOOGLE_CLIENT_SECRET
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: oauth-secrets
+              key: SECRET_KEY

@@ -21,9 +21,16 @@ import pandas as pd
 from networksecurity.utils.main_utils.utils import load_object
 
 from networksecurity.utils.ml_utils.model.estimator import NetworkModel
+from networksecurity.auth import (
+    oauth, login, auth_callback, logout, get_user_info, require_auth, SECRET_KEY
+)
+from starlette.middleware.sessions import SessionMiddleware
 
 app = FastAPI()
 origins = ["*"]
+
+# Add session middleware for OAuth
+app.add_middleware(SessionMiddleware, secret_key=SECRET_KEY)
 
 app.add_middleware(
     CORSMiddleware,
@@ -42,10 +49,35 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/", tags=["authentication"])
 async def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    user = request.session.get('user')
+    if not user:
+        # Redirect to login if not authenticated
+        return RedirectResponse(url='/login')
+    return templates.TemplateResponse("index.html", {"request": request, "user": user})
+
+@app.get("/login")
+async def login_route(request: Request):
+    """Initiate Google OAuth login"""
+    return await login(request)
+
+@app.get("/auth/callback")
+async def auth_callback_route(request: Request):
+    """Handle OAuth callback"""
+    return await auth_callback(request)
+
+@app.get("/logout")
+async def logout_route(request: Request):
+    """Logout user"""
+    return logout(request)
+
+@app.get("/api/user")
+async def get_user_route(request: Request):
+    """Get current user info"""
+    return get_user_info(request)
 
 @app.get("/train")
-async def train_route():
+async def train_route(request: Request, user: dict = require_auth):
+    """Train model - requires authentication"""
     try:
         train_pipeline=TrainingPipeline()
         train_pipeline.run_pipeline()
@@ -54,7 +86,8 @@ async def train_route():
         raise NetworkSecurityException(e,sys)
     
 @app.post("/predict")
-async def predict_route(request: Request,file: UploadFile = File(...)):
+async def predict_route(request: Request, file: UploadFile = File(...), user: dict = require_auth):
+    """Predict from CSV - requires authentication"""
     try:
         df=pd.read_csv(file.file)
         #print(df)
@@ -77,9 +110,9 @@ async def predict_route(request: Request,file: UploadFile = File(...)):
             raise NetworkSecurityException(e,sys)
 
 @app.post("/predict-url")
-async def predict_url_route(url: str):
+async def predict_url_route(request: Request, url: str, user: dict = require_auth):
     """
-    Predict phishing for a given URL
+    Predict phishing for a given URL - requires authentication
     Automatically extracts all 30 features from the URL
     """
     try:
