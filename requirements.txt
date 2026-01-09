@@ -1,5 +1,6 @@
 pandas
 numpy
+pandas
 google-cloud-storage
 python-dotenv==0.21.0
 PyYAML
@@ -12,3 +13,7 @@ dill
 beautifulsoup4
 requests
 python-whois
+authlib
+itsdangerous
+python-jose[cryptography]
+-e .
